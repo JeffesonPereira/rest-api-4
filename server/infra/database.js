@@ -1,5 +1,6 @@
-require('dotenv/config');
+require("dotenv").config();
 const pgp = require('pg-promise')();
+
 const db = pgp({
 	user: process.env.DB_USER,
 	password: process.env.DB_PASSWORD,
@@ -8,4 +9,4 @@ const db = pgp({
 	database: process.env.DN_NAME
 });
 
-module.exports = db;
+export default db;
