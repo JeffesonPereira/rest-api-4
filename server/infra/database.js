@@ -9,4 +9,4 @@ const db = pgp({
 	database: process.env.DN_NAME
 });
 
-export default db;
+module.exports = db;
