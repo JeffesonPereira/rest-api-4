@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').load()
 const pgp = require('pg-promise')();
 const db = pgp({
 	user: process.env.DB_USER,
