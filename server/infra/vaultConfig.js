@@ -8,7 +8,7 @@ const readVariablesFromVault = async () => {
   const response = await vault.read('secret/data/ambiente/test');
 
   if (response && response.data) {
-    const variables = response.data;
+    const variables = response.data.data;
 
     console.log('Variáveis lidas do Vault:', variables);
   } else {
