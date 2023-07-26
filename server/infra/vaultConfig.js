@@ -4,6 +4,7 @@ const vault = require('node-vault')({
   token: process.env.VAULT_TOKEN,
 });
 
+
 const getDatabaseCredentialsFromVault = async () => {
   const response = await vault.read('secret/data/ambiente/test');
 
@@ -13,5 +14,6 @@ const getDatabaseCredentialsFromVault = async () => {
     throw new Error('Database credentials not found in Vault.');
   }
 };
+
 
 module.exports = getDatabaseCredentialsFromVault;
