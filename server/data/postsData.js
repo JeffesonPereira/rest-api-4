@@ -1,25 +1,32 @@
-const database = require('../infra/database');
+// postService.js
+const { getDbInstance } = require('../infra/database');
 
-exports.getPosts = function () {
-	return database.query('select * from blog.post');
+exports.getPosts = async function () {
+  const db = await getDbInstance();
+  return db.query('select * from blog.post');
 };
 
-exports.getPost = function (id) {
-	return database.oneOrNone('select * from blog.post where id = $1', [id]);
+exports.getPost = async function (id) {
+  const db = await getDbInstance();
+  return db.oneOrNone('select * from blog.post where id = $1', [id]);
 };
 
-exports.getPostByTitle = function (title) {
-	return database.oneOrNone('select * from blog.post where title = $1', [title]);
+exports.getPostByTitle = async function (title) {
+  const db = await getDbInstance();
+  return db.oneOrNone('select * from blog.post where title = $1', [title]);
 };
 
-exports.savePost = function (post) {
-	return database.one('insert into blog.post (title, content) values ($1, $2) returning *', [post.title, post.content]);
+exports.savePost = async function (post) {
+  const db = await getDbInstance();
+  return db.one('insert into blog.post (title, content) values ($1, $2) returning *', [post.title, post.content]);
 };
 
-exports.updatePost = function (id, post) {
-	return database.none('update blog.post set title = $1, content = $2 where id = $3', [post.title, post.content, id]);
+exports.updatePost = async function (id, post) {
+  const db = await getDbInstance();
+  return db.none('update blog.post set title = $1, content = $2 where id = $3', [post.title, post.content, id]);
 };
 
-exports.deletePost = function (id) {
-	return database.none('delete from blog.post where id = $1', [id]);
+exports.deletePost = async function (id) {
+  const db = await getDbInstance();
+  return db.none('delete from blog.post where id = $1', [id]);
 };

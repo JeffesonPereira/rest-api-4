@@ -4,16 +4,14 @@ const vault = require('node-vault')({
   token: process.env.VAULT_TOKEN,
 });
 
-const readVariablesFromVault = async () => {
+const getDatabaseCredentialsFromVault = async () => {
   const response = await vault.read('secret/data/ambiente/test');
 
   if (response && response.data) {
-    const variables = response.data.data;
-
-    console.log('Variáveis lidas do Vault:', variables);
+    return response.data.data;
   } else {
-    throw new Error('Variáveis não encontradas no Vault.');
+    throw new Error('Database credentials not found in Vault.');
   }
 };
 
-readVariablesFromVault();
+module.exports = getDatabaseCredentialsFromVault;

@@ -1,18 +1,30 @@
-require("dotenv").config();
 const pgp = require('pg-promise')();
+const getDatabaseCredentialsFromVault = require('./vaultConfig');
 
-const DB_USER = process.env.DB_USER;
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_HOST = process.env.DB_HOST;
-const DB_PORT = process.env.DB_PORT;
-const DN_NAME = process.env.DN_NAME;
+let dbInstance;
 
-const db = pgp({
-	user: DB_USER,
-	password: DB_PASSWORD,
-	host: DB_HOST,
-	port: DB_PORT,
-	database: DN_NAME
-});
+const getDbInstance = async () => {
+  if (!dbInstance) {
+    try {
+      const dbCredentials = await getDatabaseCredentialsFromVault();
 
-module.exports = db;
+      dbInstance = pgp({
+        user: dbCredentials.DB_USER,
+        password: dbCredentials.DB_PASSWORD,
+        host: dbCredentials.DB_HOST,
+        port: dbCredentials.DB_PORT,
+        database: dbCredentials.DN_NAME
+      });
+    } catch (error) {
+      console.error('Error connecting to the database:', error.message);
+      process.exit(1);
+    }
+  }
+
+  return dbInstance;
+};
+
+module.exports = {
+  getDbInstance,
+  pgp,
+};
